@@ -26,11 +26,17 @@ export async function getTransactions (req, res) {
 
       const transactions = await db.collection('transactions').find({ userId: new ObjectId(userId)}).toArray();
 
+      let total = 0;
       for (let i = 0; i < transactions.length; i++) {
+          if (transactions[0].type === 'INCOME') {
+              total = total + transactions[0].value;
+          } else {
+            total = total - transactions[0].value;
+          }
           delete transactions[i].userId;
       }
-      
-      res.send(transactions);
+
+      res.send({ transactions, total });
     } catch (err) {
       res.sendStatus(500);
     }
