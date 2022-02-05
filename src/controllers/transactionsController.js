@@ -41,3 +41,15 @@ export async function getTransactions (req, res) {
       res.sendStatus(500);
     }
 }
+
+export async function deleteTransaction (req, res) {
+    try {
+      const transaction = res.locals.transaction;
+      
+      await db.collection('transactions').deleteOne({ _id: new ObjectId(transaction._id)});
+      
+      res.sendStatus(200);
+    } catch (err) {
+        res.sendStatus(500);
+    }
+}
