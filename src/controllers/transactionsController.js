@@ -47,9 +47,25 @@ export async function deleteTransaction (req, res) {
       const transaction = res.locals.transaction;
       
       await db.collection('transactions').deleteOne({ _id: new ObjectId(transaction._id)});
-      
+
       res.sendStatus(200);
     } catch (err) {
         res.sendStatus(500);
+    }
+}
+
+export async function updateTransaction (req, res) {
+    try {
+      await db.collection('transactions').updateOne( {
+        _id: res.locals.transaction._id },
+        { 
+            $set: req.body 
+        }
+      );
+
+      res.sendStatus(200);
+    } catch (err) {
+        console.log(err)
+      res.sendStatus(500);
     }
 }
