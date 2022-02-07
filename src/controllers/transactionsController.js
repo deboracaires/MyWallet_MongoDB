@@ -12,6 +12,7 @@ export async function postTransaction (req, res) {
         description,
         type,
         userId,
+        date: new Date(),
     });
 
     res.sendStatus(201);
@@ -28,10 +29,10 @@ export async function getTransactions (req, res) {
 
       let total = 0;
       for (let i = 0; i < transactions.length; i++) {
-          if (transactions[0].type === 'INCOME') {
-              total = total + transactions[0].value;
+          if (transactions[i].type === 'INCOME') {
+            total = total + Number(transactions[i].value);
           } else {
-            total = total - transactions[0].value;
+            total = total - Number(transactions[i].value);
           }
           delete transactions[i].userId;
       }
